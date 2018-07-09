@@ -1,0 +1,115 @@
+/* Nó de ligação*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 60
+
+/*Nó de ligação */
+struct no
+{
+	struct no * prox;
+	struct no * ant;
+	void * dados;
+};
+typedef struct no NO;
+typedef NO * PNO;
+typedef NO **PPNO;
+/* Elemento de dados */
+struct aluno
+{
+	int numero;
+	char nome[MAX];
+
+};
+typedef struct aluno ALUNO;
+typedef ALUNO * PALUNO;
+/* Cria aluno*/
+PALUNO criaAluno()
+{
+	PALUNO novo;
+	novo = (PALUNO)malloc(sizeof(ALUNO);
+	printf("Numero: ");
+	scanf("%d", &novo->numero);
+	/* Apaga o resto da linha */
+	scanf("%*[^\n]"); scanf("%*c");
+	printf("Nome: ");
+	fflush(stdout);
+	fgets(novo->nome, MAX, stdin);
+	/* Elimina '\n' no fim dam string*/
+	novo->nome[strlen(novo->nome) - 1] = '\0';
+	return novo;
+}
+/* Inserir no ínicio*/
+void insereInicio(PPNO cabeca, void * dados)
+{
+	PNO novo;
+	novo = (PNO)malloc(sizeof(NO));
+	if (*cabeca) (*cabeca)->ant = novo;
+	novo->prox = *cabeca;
+	novo->ant = NULL;
+	*cabeca = novo;
+	novo->dados = dados;
+
+}
+/* Inserir no fim */
+void insereFim(PPNO cabeca, void * dados)
+{
+	PNO ptr, novo;
+	if (!*cabeca)
+		insereInicio(cabeca, dados);
+	else
+	{
+		for (ptr = *cabeca; ptr->prox; ptr = ptr->prox);
+		novo = (PNO)malloc(sizeof(NO));
+		ptr->prox = novo;
+		novo->prox = NULL;
+		novo->ant = ptr;
+		novo->dados = dados;
+	}
+}
+void imprime(PNO cabeca, void(*imprimeDados)())
+{
+	PNO ptr;
+	for (ptr = cabeca; ptr; ptr = ptr->prox)
+	{
+		(*imrpimeDados)(ptr->dados);
+	}
+}
+void imprimeAluno(PALUNO p)
+{
+	printf("%d - %s\n", p->numero, p->nome);
+
+}
+int main()
+{
+	PNO alunos = NULL;
+	PALUNO ptr;
+	int opcao;
+	do
+	{
+		printf("\nListas Genericas\n");
+		printf("\n1 - Inserir aluno no inicio");
+		printf("\n2 - Inserir aluno no fim");
+		printf("\n3 - Imprimir lista de alunos");
+		printf("\n0 - Sair");
+		printf("\nInsira a opcao: ");
+		opcao = getchar();
+		scanf("%*[^\n]"); scanf("%*c");
+		switch (opcao)
+		{
+			case '1';
+				ptr = criaAluno();
+				insereInicio(&alunos, ptr);
+				break;
+				case '2';
+					ptr = criaAluno();
+					insereFim(&alunos, ptr);
+					break;
+				case'3';
+					imprime(alunos, imprimeAluno);
+					break;
+
+		}
+
+	} while (opcao != '0');
+}
